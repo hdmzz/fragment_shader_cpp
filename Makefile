@@ -1,3 +1,5 @@
+CC	= g++
+LANG	= .cpp
 all:
-	cc src/main.c -o ppm
+	${CC} src/main${LANG} -o ppm
 
