@@ -18,34 +18,54 @@ struct vec2 {
 };
 
 vec2	operator *(const vec2 &a, float s) { return vec2(a.x * s, a.y * s); }
-vec2	operator -(const vec2 &a, const vec2 &b) { return vec2(a.x - b.x, a.y - b.y); }
-vec2	operator /(const vec2 &a, float s) { return vec2(a.x / s, a.y / s); }
-vec2	operator +(const vec2 &a, const vec2 &b) { return vec2(a.x + b.x, a.y + b.y); }
+vec2	operator *(const vec2 &a, const vec2 &b) { return vec2(a.x * b.x, a.y * b.y); }
+vec4	operator *(const vec4 &a, float s) { return vec4(a.x * s, a.y * s, a.z * s, a.w * s); }
+vec4	operator *(float s, const vec4 &a) { return a * s; }
 
+vec2	operator -(const vec2 &a, const vec2 &b) { return vec2(a.x - b.x, a.y - b.y); }
+vec4	operator -(float s, const vec4 &a) { return vec4(a.x - s, a.y - s,  a.z - s, a.w - s ); }
+
+vec2	operator /(const vec2 &a, float s) { return vec2(a.x / s, a.y / s); }
+vec4	operator /(const vec4 &a, const vec4 &b) { return vec4(a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w ); }
+
+vec2	operator +(const vec2 &a, const vec2 &b) { return vec2(a.x + b.x, a.y + b.y); }
+vec2	operator +(const vec2 &a, float s) { return vec2(a.x + s, a.y + s); }
+vec4	operator +(const vec4 &a, float s) { return vec4(a.x + s, a.y + s, a.z + s, a.w + s); }
+vec4	operator +(const vec4 &a, const vec4 &b) { return vec4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w); }
+
+vec2	&operator +=(vec2 &a, float s) { a = a + s; return a; }
+vec2	&operator +=(vec2 &a, const vec2 &b) { a = a + b; return a; }
+vec4	&operator +=(vec4 &a, const vec4 &b) { a = a + b; return a; }
 
 float	dot(const vec2 &a, const vec2 &b) { return a.x * b.x + a.y * b.y; }
 
+vec2	cos(const vec2 &a) { return vec2(cosf(a.x), cosf(a.y)); }
+
 vec4	sin(const vec4 &a) { return vec4(sinf(a.x), sinf(a.y),  sinf(a.z),  sinf(a.w)); }
+vec4	tanh(const vec4 &a) { return vec4(tanhf(a.x), tanhf(a.y), tanhf(a.z), tanhf(a.w)); }
+vec4	exp(const vec4 &a) { return vec4(expf(a.x), expf(a.y), expf(a.z), expf(a.w)); }
 
 int	main(void)
 {
-	size_t	i = 0;
+	int	LAP = 240;
+	int	i = 0;
 	char	buffer[256];
 
-	while (i < 60) {
-		snprintf(buffer, sizeof(buffer), "output-%02d.ppm", i); 
+	while (i < LAP) {
+		snprintf(buffer, sizeof(buffer), "output-%03d.ppm", i); 
 		const char	*output_path 	= buffer;
 		FILE		*file		= fopen(output_path, "wb");
-		size_t		width		= 16 * 60;
-		size_t		heigth		= 9 * 60;
+		int		width		= 16 * 60;
+		int		heigth		= 9 * 60;
 
 		fprintf(file, "P6\n");
 		fprintf(file, "%d %d\n", width, heigth);
 		fprintf(file, "255\n");
 
 		vec2	r = {(float)width, (float)heigth};
-		for (size_t x = 0; x < heigth; x++) {
-			for (size_t y = 0; y < width; y++) {
+		float	t = ((float)i / LAP) * 2 * M_PI;
+		for (int y = 0; y < heigth; y++) {
+			for (int x = 0; x < width; x++) {
 				vec4	o;
 				vec2	FC = {(float)x, (float)y};
 				vec2	p = (FC * 2. - r) / r.y;
