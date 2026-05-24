@@ -23,7 +23,7 @@ vec4	operator *(const vec4 &a, float s) { return vec4(a.x * s, a.y * s, a.z * s,
 vec4	operator *(float s, const vec4 &a) { return a * s; }
 
 vec2	operator -(const vec2 &a, const vec2 &b) { return vec2(a.x - b.x, a.y - b.y); }
-vec4	operator -(float s, const vec4 &a) { return vec4(a.x - s, a.y - s,  a.z - s, a.w - s ); }
+vec4	operator -(float s, const vec4 &a) { return vec4(s - a.x, s - a.y, s - a.z, s - a.w); }
 
 vec2	operator /(const vec2 &a, float s) { return vec2(a.x / s, a.y / s); }
 vec4	operator /(const vec4 &a, const vec4 &b) { return vec4(a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w ); }
@@ -52,7 +52,7 @@ int	main(void)
 	char	buffer[256];
 
 	while (i < LAP) {
-		snprintf(buffer, sizeof(buffer), "output-%03d.ppm", i); 
+		snprintf(buffer, sizeof(buffer), "outputs/output-%03d.ppm", i); 
 		const char	*output_path 	= buffer;
 		FILE		*file		= fopen(output_path, "wb");
 		int		width		= 16 * 60;
